@@ -1,17 +1,71 @@
-import { StyleSheet, Text, View, Image, ScrollView, ActivityIndicator, TouchableOpacity,FlatList } from 'react-native'
-import React from 'react'
+import { StyleSheet, Text, View, Image, ScrollView, ActivityIndicator, TouchableOpacity, FlatList } from 'react-native'
+import React, { useEffect, useState } from 'react'
 import styles from '../style/styles'
 import { useFonts } from 'expo-font';
 import Icon from '@expo/vector-icons/FontAwesome';
 import Ionicons from '@expo/vector-icons/Ionicons';
+import axios from 'axios';
+import AsyncStorage from '@react-native-async-storage/async-storage';
+import uuid from 'react-native-uuid';
 
-const HomeScreen = ():React.JSX.Element => {
+import ListItem from './ListItem';
+
+interface dataType {
+    _id: string
+    bookID: string
+    bookName: string
+    bookDescription: string
+    bookAuthor: string
+    bookPublishAt: Date
+    bookType: string
+    bookImage: string
+}
+
+const HomeScreen = (): React.JSX.Element => {
+    const [data, setData] = useState<dataType[]>([])
+    const [userID, setUserID] = useState<string | null>(null);
+
     const [loaded] = useFonts({
         'Prompt-Regular': require('../assets/fonts/Prompt-Regular.ttf'),
         'Prompt-Bold': require('../assets/fonts/Prompt-Bold.ttf'),
         'Prompt-BoldItalic': require('../assets/fonts/Prompt-BoldItalic.ttf'),
         'Prompt-Light': require('../assets/fonts/Prompt-Light.ttf'),
     });
+
+    useEffect(() => {
+        const firstRendering = async () => {
+            try {
+                axios.get('http://10.0.2.2:5000/')
+                    .then((res) => {
+                        setData(res.data)
+                    })
+            } catch (error) {
+                console.log(error);
+            }
+        }
+
+        firstRendering()
+    }, [])
+
+    // สำหรับสร้าง userID เมื่อเข้าแอปมาครั้งแรกเท่านั้น เมื่อปิดแอปและเปิดใหม่ทางระบบจะไปเช็ค ใน AsyncStorage ว่าเคยมี userID สร้างไว้รึป่าวถ้ามีก็จะเรียกมาใช้ ถ้าไม่มีก็จะสร้างใหม่
+    useEffect(() => {
+        const checkOrCreateUserID = async () => {
+            try {
+                const storedUserID = await AsyncStorage.getItem('userID');
+                if (storedUserID) {
+                    setUserID(storedUserID);
+                } else {
+                    const newUserID = uuid.v4() as string;
+                    await AsyncStorage.setItem('userID', newUserID);
+                    setUserID(newUserID);
+                }
+            } catch (error) {
+                console.error('Failed to get or create userID:', error);
+            }
+        };
+
+        checkOrCreateUserID();
+    }, []);
 
     if (!loaded) {
         return <ActivityIndicator />;
@@ -57,9 +111,7 @@ const HomeScreen = ():React.JSX.Element => {
                                     <Text style={{ fontWeight: 'bold', fontSize: 15, marginLeft: 7, }}>Favorited</Text>
                                 </View>
                                 <View style={{ flexDirection: 'row' }}>
-                                    {/* <FlatList
-                                    
-                                    /> */}
+
                                     <View style={[styles.showFav]}>
                                         <Image source={require('../assets/images/real_mask.png')} style={[styles.maskSize, styles.positionRT]} />
                                         <View>
@@ -79,6 +131,16 @@ const HomeScreen = ():React.JSX.Element => {
                         </View>
                     </View>
                 </ScrollView>
+                {/* <View>
+                    <Text>{userID}</Text>
+                    <FlatList
+                        data={data}
+                        keyExtractor={(item) => item.bookID}
+                        renderItem={({ item }) => {
+                            return <ListItem item={item} />;
+                        }}
+                    />
+                </View> */}
             </View>
         </View>
     )
