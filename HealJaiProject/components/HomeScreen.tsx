@@ -33,22 +33,18 @@ const HomeScreen = (): React.JSX.Element => {
     });
 
     useEffect(() => {
-        const firstRendering = async () => {
-            try {
-                axios.get('http://10.0.2.2:5000/')
-                    .then((res) => {
-                        setData(res.data)
-                    })
-            } catch (error) {
-                console.log(error);
-            }
-        }
+        // const firstRendering = async () => {
+        //     try {
+        //         axios.get('http://10.0.2.2:5000/')
+        //             .then((res) => {
+        //                 setData(res.data)
+        //             })
+        //     } catch (error) {
+        //         console.log(error);
+        //     }
+        // }
 
-        firstRendering()
-    }, [])
-
-    // สำหรับสร้าง userID เมื่อเข้าแอปมาครั้งแรกเท่านั้น เมื่อปิดแอปและเปิดใหม่ทางระบบจะไปเช็ค ใน AsyncStorage ว่าเคยมี userID สร้างไว้รึป่าวถ้ามีก็จะเรียกมาใช้ ถ้าไม่มีก็จะสร้างใหม่
-    useEffect(() => {
+        // สำหรับสร้าง userID เมื่อเข้าแอปมาครั้งแรกเท่านั้น เมื่อปิดแอปและเปิดใหม่ทางระบบจะไปเช็ค ใน AsyncStorage ว่าเคยมี userID สร้างไว้รึป่าวถ้ามีก็จะเรียกมาใช้ ถ้าไม่มีก็จะสร้างใหม่
         const checkOrCreateUserID = async () => {
             try {
                 const storedUserID = await AsyncStorage.getItem('userID');
@@ -65,7 +61,8 @@ const HomeScreen = (): React.JSX.Element => {
         };
 
         checkOrCreateUserID();
-    }, []);
+        // firstRendering()
+    }, [])
 
     if (!loaded) {
         return <ActivityIndicator />;
