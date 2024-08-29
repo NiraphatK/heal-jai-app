@@ -1,14 +1,12 @@
 import { StyleSheet, Text, View, Image, ScrollView, ActivityIndicator, TouchableOpacity, FlatList } from 'react-native'
 import React, { useEffect, useState } from 'react'
-import styles from '../style/styles'
+import styles from '../../style/styles'
 import { useFonts } from 'expo-font';
 import Icon from '@expo/vector-icons/FontAwesome';
 import Ionicons from '@expo/vector-icons/Ionicons';
 import axios from 'axios';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import uuid from 'react-native-uuid';
-
-import ListItem from './ListItem';
 
 interface dataType {
     _id: string
@@ -26,10 +24,10 @@ const HomeScreen = (): React.JSX.Element => {
     const [userID, setUserID] = useState<string | null>(null);
 
     const [loaded] = useFonts({
-        'Prompt-Regular': require('../assets/fonts/Prompt-Regular.ttf'),
-        'Prompt-Bold': require('../assets/fonts/Prompt-Bold.ttf'),
-        'Prompt-BoldItalic': require('../assets/fonts/Prompt-BoldItalic.ttf'),
-        'Prompt-Light': require('../assets/fonts/Prompt-Light.ttf'),
+        'Prompt-Regular': require('../../assets/fonts/Prompt-Regular.ttf'),
+        'Prompt-Bold': require('../../assets/fonts/Prompt-Bold.ttf'),
+        'Prompt-BoldItalic': require('../../assets/fonts/Prompt-BoldItalic.ttf'),
+        'Prompt-Light': require('../../assets/fonts/Prompt-Light.ttf'),
     });
 
     useEffect(() => {
@@ -71,14 +69,14 @@ const HomeScreen = (): React.JSX.Element => {
     return (
         <View style={styles.container}>
             <View style={styles.header}>
-                <Image source={require('../assets/images/logo.png')} style={styles.imageLogo} />
+                <Image source={require('../../assets/images/logo.png')} style={styles.imageLogo} />
             </View>
             <View style={styles.body}>
                 <ScrollView>
                     <View style={{ flex: 1, alignItems: 'center', paddingBottom: 120 }}>
                         <View style={{ width: '90%' }}>
                             <View style={styles.CardExam}>
-                                <Image source={require('../assets/images/night_sky.png')} style={styles.examBackground} />
+                                <Image source={require('../../assets/images/night_sky.png')} style={styles.examBackground} />
                                 <View style={styles.insideImg}>
                                     <Text style={{ fontFamily: 'Prompt-Regular', fontSize: 55, color: '#fff' }}>แบบทดสอบ</Text>
                                     <Text style={{ fontFamily: 'Prompt-Regular', color: '#fff' }}>ทำแบบทดสอบเพื่อค้นหาบุคลิกภาพของคุณ!!</Text>
@@ -104,20 +102,20 @@ const HomeScreen = (): React.JSX.Element => {
                             </View>
                             <View style={[styles.CardFeature, styles.MaginTop]}>
                                 <View style={{ flexDirection: 'row', alignItems: 'center' }}>
-                                    <Image source={require('../assets/images/real_mask2.png')} style={styles.maskSize} />
+                                    <Image source={require('../../assets/images/real_mask2.png')} style={styles.maskSize} />
                                     <Text style={{ fontWeight: 'bold', fontSize: 15, marginLeft: 7, }}>Favorited</Text>
                                 </View>
                                 <View style={{ flexDirection: 'row' }}>
 
                                     <View style={[styles.showFav]}>
-                                        <Image source={require('../assets/images/real_mask.png')} style={[styles.maskSize, styles.positionRT]} />
+                                        <Image source={require('../../assets/images/real_mask.png')} style={[styles.maskSize, styles.positionRT]} />
                                         <View>
                                             <Text style={{ fontFamily: 'Prompt-Regular', fontSize: 15, color: '#432C81' }}>Today</Text>
                                             <Text style={{ fontFamily: 'Prompt-Regular', fontSize: 13, color: '#A095C1', marginTop: 5 }}>Lorem ipsum dolor sit amet.</Text>
                                         </View>
                                     </View>
                                     <View style={[styles.showFav]}>
-                                        <Image source={require('../assets/images/real_mask.png')} style={[styles.maskSize, styles.positionRT]} />
+                                        <Image source={require('../../assets/images/real_mask.png')} style={[styles.maskSize, styles.positionRT]} />
                                         <View>
                                             <Text style={{ fontFamily: 'Prompt-Regular', fontSize: 15, color: '#432C81' }}>Today</Text>
                                             <Text style={{ fontFamily: 'Prompt-Regular', fontSize: 13, color: '#A095C1', marginTop: 5 }}>Lorem ipsum dolor sit amet.</Text>
