@@ -1,10 +1,10 @@
-import { Text, View } from 'react-native'
+import { View, Text } from 'react-native'
 import React from 'react'
 
 const LibraryScreen = () => {
   return (
     <View>
-      <Text>Library</Text>
+      <Text>LibraryScreen</Text>
     </View>
   )
 }
