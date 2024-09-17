@@ -7,6 +7,7 @@ import Ionicons from '@expo/vector-icons/Ionicons';
 import axios from 'axios';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import uuid from 'react-native-uuid';
+import { useNavigation } from '@react-navigation/native';
 
 interface dataType {
     _id: string
@@ -20,6 +21,8 @@ interface dataType {
 }
 
 const HomeScreen = (): React.JSX.Element => {
+    const navigation = useNavigation<any>();
+
     const [data, setData] = useState<dataType[]>([])
     const [userID, setUserID] = useState<string | null>(null);
 
@@ -80,7 +83,7 @@ const HomeScreen = (): React.JSX.Element => {
                                 <View style={styles.insideImg}>
                                     <Text style={{ fontFamily: 'Prompt-Regular', fontSize: 55, color: '#fff' }}>แบบทดสอบ</Text>
                                     <Text style={{ fontFamily: 'Prompt-Regular', color: '#fff' }}>ทำแบบทดสอบเพื่อค้นหาบุคลิกภาพของคุณ!!</Text>
-                                    <TouchableOpacity style={styles.buttonExam}>
+                                    <TouchableOpacity style={styles.buttonExam} onPress={() => navigation.navigate('QuestionScreen')}>
                                         <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
                                             <Text style={{ fontFamily: 'Prompt-Regular' }}>เริ่มทำแบบทดสอบ</Text>
                                         </View>
@@ -95,7 +98,7 @@ const HomeScreen = (): React.JSX.Element => {
                                         เข้าใจถึงความแตกต่างระหว่างบุคคล แบบทดสอบนี้ถูกพัฒนาขึ้นโดย Katharine C. Briggs และ Isabel Briggs Myers ซึ่งต่อยอดมาจากทฤษฎีของนักจิตวิทยาที่ชื่อ Carl Jung
                                     </Text>
                                 </View>
-                                <TouchableOpacity style={styles.buttonInfo}>
+                                <TouchableOpacity style={styles.buttonInfo} onPress={()=>navigation.navigate("ShowMBTIScreen")}>
                                     <Ionicons name='person' size={20} color={'#A095C1'} />
                                     <Text style={{ fontFamily: 'Prompt-Regular', fontSize: 16, marginLeft: 5, color: '#A095C1' }}>ดูข้อมูล</Text>
                                 </TouchableOpacity>

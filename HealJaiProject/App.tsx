@@ -12,6 +12,7 @@ import LibraryStackScreen from './screens/Stacks/LibraryStackScreen';
 import FavoriteScreen from './screens/FavoriteScreen/FavoriteScreen';
 import OtherScreen from './screens/OtherScreen/OtherScreen';
 import {MyTabBar} from './components/BottomTabs/MyTabBar';
+import HomeStackScreen from './screens/Stacks/HomeStackScreen';
 
 const Tab = createBottomTabNavigator();
 
@@ -19,7 +20,7 @@ export default function App() {
   return (
     <NavigationContainer>
       <Tab.Navigator tabBar={props => <MyTabBar {...props} />} screenOptions={{headerShown:false}}>
-        <Tab.Screen name="Home" component={HomeScreen} />
+        <Tab.Screen name="Home" component={HomeStackScreen} />
         <Tab.Screen name="Library" component={LibraryStackScreen} />
         <Tab.Screen name="Favorite" component={FavoriteScreen} />
         <Tab.Screen name="Other" component={OtherScreen} />
