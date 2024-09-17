@@ -8,7 +8,7 @@ import Ionicons from '@expo/vector-icons/Ionicons';
 import Animated, { useAnimatedStyle, useSharedValue, withSpring, withTiming } from 'react-native-reanimated';
 
 import HomeScreen from './screens/HomeScreen/HomeScreen';
-import LibraryStackScreen from './screens/LibraryStackScreen';
+import LibraryStackScreen from './screens/Stacks/LibraryStackScreen';
 import FavoriteScreen from './screens/FavoriteScreen/FavoriteScreen';
 import OtherScreen from './screens/OtherScreen/OtherScreen';
 import {MyTabBar} from './components/BottomTabs/MyTabBar';
