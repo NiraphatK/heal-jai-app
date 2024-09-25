@@ -47,7 +47,7 @@ const LibraryScreen: React.FC = (): React.JSX.Element => {
           </View>
         </View>
         {/* read lasted */}
-        <View style={styles.containerContent}>
+        {/* <View style={styles.containerContent}>
           <Text style={styles.title}>อ่านล่าสุด</Text>
           <View style={styles.containerItem}>
             <View style={styles.item}>
@@ -56,12 +56,12 @@ const LibraryScreen: React.FC = (): React.JSX.Element => {
               <Text style={styles.subTitle}>asdf</Text>
             </View>
           </View>
-        </View>
+        </View> */}
         {/* Ranking */}
-        <View style={styles.containerContent}>
-          <Text style={styles.title}>อันดับ</Text>
+        {/* <View style={styles.containerContent}>
+          <Text style={styles.title}>อันดับ</Text> */}
           {/* Catagory bottom */}
-          <View style={styles.containerContent}>
+          {/* <View style={styles.containerContent}>
             <TouchableOpacity />
           </View>
           <View style={[styles.containerItem, { flexWrap: "wrap" }]}>
@@ -71,7 +71,7 @@ const LibraryScreen: React.FC = (): React.JSX.Element => {
               <Text style={styles.subTitle}>asdf</Text>
             </View>
           </View>
-        </View>
+        </View> */}
       </ScrollView>
     </View>
   );

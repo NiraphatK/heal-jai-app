@@ -6,7 +6,7 @@ import {
   ActivityIndicator,
   TouchableOpacity
 } from "react-native";
-import React from "react";
+import React, { useEffect,useState } from "react";
 import styles from "./styles";
 import Ionicons from "@expo/vector-icons/Ionicons";
 import { useFonts } from "expo-font";
@@ -14,11 +14,21 @@ import {
   useNavigation,
   useRoute,
 } from "@react-navigation/native";
+import { findBookByName } from "../../services/product-service";
+
+type bookType = {
+  title: string,
+  type: string,
+  author: string,
+  cover: string,
+  synopsis: string,
+}
 
 
 const DetailScreen = (): React.JSX.Element => {
   const route = useRoute<any>();
   const navigation = useNavigation<any>();
+  const [bookData, setBookData] = useState<bookType>()
 
   const { data } = route.params;
 
@@ -28,6 +38,19 @@ const DetailScreen = (): React.JSX.Element => {
     "Prompt-BoldItalic": require("../../assets/fonts/Prompt-BoldItalic.ttf"),
     "Prompt-Light": require("../../assets/fonts/Prompt-Light.ttf"),
   });
+
+  useEffect(() => {
+    const getBook = async () => {
+      try {
+        const res = await findBookByName(data)
+        setBookData(res.data)
+      } catch (error: any) {
+        console.log(error.message);
+      }
+    }
+
+    getBook()
+  }, [navigation])
 
   if (!loaded) {
     return <ActivityIndicator />;
@@ -41,7 +64,7 @@ const DetailScreen = (): React.JSX.Element => {
           style={styles.backgroundImage}
           blurRadius={7}
         >
-          <TouchableOpacity onPress={()=>navigation.goBack()}>
+          <TouchableOpacity onPress={() => navigation.goBack()}>
             <Ionicons
               name="chevron-back-outline"
               size={40}
