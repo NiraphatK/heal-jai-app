@@ -23,7 +23,7 @@ export default function App() {
         <Tab.Screen name="Home" component={HomeStackScreen} />
         <Tab.Screen name="Library" component={LibraryStackScreen} />
         <Tab.Screen name="Favorite" component={FavoriteScreen} />
-        <Tab.Screen name="Other" component={OtherScreen} />
+        <Tab.Screen name="Other" component={OtherScreen}/>
       </Tab.Navigator>
     </NavigationContainer>
   );

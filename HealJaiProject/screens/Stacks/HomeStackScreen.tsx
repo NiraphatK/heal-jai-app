@@ -4,6 +4,8 @@ import React from 'react'
 import HomeScreen from '../HomeScreen/HomeScreen'
 import QuestionScreen from '../HomeScreen/QuestionScreen'
 import ShowMBTIScreen from '../HomeScreen/ShowMBTIScreen'
+import { MyTabBar } from '../../components/BottomTabs/MyTabBar'
+import DetailScreen from '../DetailScreen/DetailScreen'
 
 
 const Stack = createStackNavigator()

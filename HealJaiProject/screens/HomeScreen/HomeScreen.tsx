@@ -1,5 +1,5 @@
 import { StyleSheet, Text, View, Image, ScrollView, ActivityIndicator, TouchableOpacity, FlatList } from 'react-native'
-import React, { useEffect, useState } from 'react'
+import React, { useCallback, useEffect, useState } from 'react'
 import styles from '../../style/styles'
 import { useFonts } from 'expo-font';
 import Icon from '@expo/vector-icons/FontAwesome';
@@ -8,23 +8,15 @@ import axios from 'axios';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import uuid from 'react-native-uuid';
 import { useNavigation } from '@react-navigation/native';
+import { createUserById, findUserById } from '../../services/product-service';
 
-interface dataType {
-    _id: string
-    bookID: string
-    bookName: string
-    bookDescription: string
-    bookAuthor: string
-    bookPublishAt: Date
-    bookType: string
-    bookImage: string
-}
 
 const HomeScreen = (): React.JSX.Element => {
     const navigation = useNavigation<any>();
 
-    const [data, setData] = useState<dataType[]>([])
-    const [userID, setUserID] = useState<string | null>(null);
+    const [data, setData] = useState([])
+    const [userID, setUserID] = useState<string | null>("");
+    const [onLoading,setOnLoading] = useState<boolean>(false)
 
     const [loaded] = useFonts({
         'Prompt-Regular': require('../../assets/fonts/Prompt-Regular.ttf'),
@@ -34,16 +26,25 @@ const HomeScreen = (): React.JSX.Element => {
     });
 
     useEffect(() => {
-        // const firstRendering = async () => {
-        //     try {
-        //         axios.get('http://10.0.2.2:5000/')
-        //             .then((res) => {
-        //                 setData(res.data)
-        //             })
-        //     } catch (error) {
-        //         console.log(error);
-        //     }
-        // }
+
+        const getUser = async (id:string) => {
+            try {
+                const response = await findUserById(id);
+                setData(response.data);
+              } catch (error: any) {
+                console.log(error.message);
+              }
+        }
+
+        const createUser = async (id:string) => {
+            try {
+                const response = await createUserById(id);
+                getUser(id)
+                
+              } catch (error: any) {
+                console.log(error.message);
+              }
+        }
 
         // สำหรับสร้าง userID เมื่อเข้าแอปมาครั้งแรกเท่านั้น เมื่อปิดแอปและเปิดใหม่ทางระบบจะไปเช็ค ใน AsyncStorage ว่าเคยมี userID สร้างไว้รึป่าวถ้ามีก็จะเรียกมาใช้ ถ้าไม่มีก็จะสร้างใหม่
         const checkOrCreateUserID = async () => {
@@ -51,19 +52,30 @@ const HomeScreen = (): React.JSX.Element => {
                 const storedUserID = await AsyncStorage.getItem('userID');
                 if (storedUserID) {
                     setUserID(storedUserID);
+                    getUser(storedUserID)
                 } else {
                     const newUserID = uuid.v4() as string;
                     await AsyncStorage.setItem('userID', newUserID);
                     setUserID(newUserID);
+                    await createUser(newUserID)
                 }
             } catch (error) {
-                console.error('Failed to get or create userID:', error);
+                console.error('Failed to get or create userID: ', error);
             }
         };
 
         checkOrCreateUserID();
-        // firstRendering()
-    }, [])
+        
+    },[])
+
+    const removeUserID = async () => {
+        try {
+          await AsyncStorage.removeItem('userID');
+          const storedUserID = await AsyncStorage.getItem('userID');
+        } catch (error) {
+          console.error('Failed to remove userID:', error);
+        }
+      };
 
     if (!loaded) {
         return <ActivityIndicator />;
