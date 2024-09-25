@@ -3,32 +3,27 @@ const mongoose = require('mongoose')
 // mongoose.Schema.Types.ObjectId
 
 const bookSchema = mongoose.Schema({
-    bookID: { 
+    title: { 
         type: String, 
         required: true ,
-        unique: true
     },
-    bookName:{
-        type:String,
-        required: true
-    },
-    bookDescription:{
-        type:String,
-        required:true
-    },
-    bookAuthor:{
-        type:String,
-        required:true
-    },
-    bookPublishAt: { 
-        type: Date, 
-        required: true 
-    },
-    bookType:{
+    type:{
         type:[String],
         required:true
     },
-    bookImage:{
+    author:{
+        type:String,
+        required:true
+    },
+    cover:{
+        type:String,
+        required:true
+    },
+    synopsis:{
+        type:String,
+        required:true
+    },
+    rating:{
         type:String,
         required:true
     }
