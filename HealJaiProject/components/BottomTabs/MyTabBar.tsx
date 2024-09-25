@@ -3,12 +3,15 @@ import { BottomTabBarProps } from '@react-navigation/bottom-tabs';
 import Ionicons from '@expo/vector-icons/Ionicons';
 import FontAwesome from '@expo/vector-icons/FontAwesome';
 import { TabBarButton } from './TabBarButton';
-import { useState } from 'react';
-import Animated, { useAnimatedStyle, useSharedValue, withSpring } from 'react-native-reanimated';
+import { useState,useEffect } from 'react';
+import Animated, { useAnimatedStyle, useSharedValue, withSpring, withTiming } from 'react-native-reanimated';
+import React from 'react';
 
+var display = ''
 
 export function MyTabBar({ state, descriptors, navigation }: BottomTabBarProps) {
     const [dimensions, setDimensions] = useState({ height: 0, width: 0 });
+    const [tabbarDisplay, setTabbarDisplay] = useState<'flex' | 'none'>('flex');
 
     const buttonWidth = dimensions.width / state.routes.length;
 
@@ -27,8 +30,17 @@ export function MyTabBar({ state, descriptors, navigation }: BottomTabBarProps) 
         }
     })
 
+    useEffect(() => {
+        const currentRoute = state.routes[state.index];
+        if (currentRoute.state?.routes[1]?.name === 'QuestionScreen' && state.index === 0) {
+            setTabbarDisplay('none');
+        } else {
+            setTabbarDisplay('flex');
+        }
+    }, [state]);
+
     return (
-        <View onLayout={onTabbarLayout} style={styles.tabbar}>
+        <View onLayout={onTabbarLayout} style={[styles.tabbar,{ display: tabbarDisplay }]}>
             <View style={{position:'relative',top:-30}}>
                 <Animated.View style={[animatedStyle, {
                     position: 'absolute',
@@ -52,7 +64,7 @@ export function MyTabBar({ state, descriptors, navigation }: BottomTabBarProps) 
                 const isFocused = state.index === index;
 
                 const onPress = () => {
-                    tabPositionX.value = withSpring(buttonWidth * index, { duration: 1200 })
+                    tabPositionX.value = withTiming(buttonWidth * index, { duration: 150 })
                     const event = navigation.emit({
                         type: 'tabPress',
                         target: route.key,
@@ -81,23 +93,6 @@ export function MyTabBar({ state, descriptors, navigation }: BottomTabBarProps) 
                         color={isFocused ? '#673ab7' : '#222'}
                         label={label}
                     />
-                    // <TouchableOpacity
-                    //     key={route.name}
-                    //     accessibilityRole="button"
-                    //     accessibilityState={isFocused ? { selected: true } : {}}
-                    //     accessibilityLabel={options.tabBarAccessibilityLabel}
-                    //     testID={options.tabBarTestID}
-                    //     onPress={onPress}
-                    //     onLongPress={onLongPress}
-                    //     style={styles.tabbarItem}
-                    // >
-                    //     {icon[route.name]({
-                    //         color: isFocused ? '#673ab7' : '#222'
-                    //     })}
-                    //     <Text style={{ color: isFocused ? '#673ab7' : '#222' }}>
-                    //         {label}
-                    //     </Text>
-                    // </TouchableOpacity>
                 );
             })}
         </View>
@@ -106,6 +101,7 @@ export function MyTabBar({ state, descriptors, navigation }: BottomTabBarProps) 
 
 const styles = StyleSheet.create({
     tabbar: {
+        display: display as 'none' | 'flex',
         position: 'absolute',
         bottom: 0,
         flexDirection: 'row',

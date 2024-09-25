@@ -3,6 +3,7 @@ import { createStackNavigator } from '@react-navigation/stack'
 import React from 'react'
 import LibraryScreen from '../LibraryScreen/LibraryScreen'
 import DetailScreen from '../DetailScreen/DetailScreen'
+import FavButton from '../../components/FavButton'
 
 const Stack = createStackNavigator()
 
