@@ -60,34 +60,14 @@ const LibraryScreen: React.FC = (): React.JSX.Element => {
     const response = await findTop10();
     setRecommendBooks(response.data);
   };
-
   const getUserRecentBooks = async () => {
     const userID: any = await AsyncStorage.getItem("userID");
     const response = await findUserById(userID);
     // console.log(response.data)
     setUser(response.data);
     // console.log(user)
-
-    if (user?.history && user.history.length > 0) {
-      try {
-        const booksPromises = user?.history.map(async (title: string) => {
-          const bookRes = await findBookByName(title);
-          return bookRes.data;
-        });
-
-        const books = await Promise.all(booksPromises);
-        setRecentBooks(books);
-      } catch (err) {
-        console.log(err);
-        setRecentBooks([]);
-      }
-    } else {
-      setRecentBooks([]);
-    }
   };
-
   const handlePressBook = async (item: BooksItem) => {
-    
     navigation.navigate({ name: "DetailScreen", params: { data: item.title } });
   };
 
@@ -96,6 +76,28 @@ const LibraryScreen: React.FC = (): React.JSX.Element => {
     getRecommendBooks();
     getUserRecentBooks();
   }, []);
+
+  useEffect(() => {
+    const fetchRecentBook = async () => {
+      if (user?.history && user.history.length > 0) {
+        try {
+          const booksPromises = user?.history.map(async (title: string) => {
+            const bookRes = await findBookByName(title);
+            return bookRes.data;
+          });
+
+          const books = await Promise.all(booksPromises);
+          setRecentBooks(books);
+        } catch (err) {
+          console.log(err);
+          setRecentBooks([]);
+        }
+      } else {
+        setRecentBooks([]);
+      }
+    };
+    fetchRecentBook();
+  }, [user]);
 
   //render itesm function
   const _renderItemRecommend = ({ item }: { item: BooksItem }) => {
