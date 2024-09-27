@@ -6,7 +6,7 @@ import {
   ActivityIndicator,
   TouchableOpacity
 } from "react-native";
-import React, { useEffect,useState } from "react";
+import React, { useEffect, useState } from "react";
 import styles from "./styles";
 import Ionicons from "@expo/vector-icons/Ionicons";
 import { useFonts } from "expo-font";
@@ -97,6 +97,7 @@ const DetailScreen = (): React.JSX.Element => {
         </Text>
         <View style={{ flexDirection: "row", paddingVertical: 15 }}>
           <View style={styles.MBTI}>
+            <Text style={styles.MBTIText}>INFJ</Text>
           </View>
           <View style={[styles.MBTI, { marginStart: 15 }]}>
             <Text style={styles.MBTIText}>INFJ</Text>

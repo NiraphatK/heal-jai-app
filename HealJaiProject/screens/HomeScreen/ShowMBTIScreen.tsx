@@ -2,7 +2,7 @@ import React from 'react';
 import { View, Text, Image, FlatList, StyleSheet, TouchableOpacity } from 'react-native';
 
 const data = [
-  { key: 'INTJ', image: require('../../assets/images/char_images/intj.png') }, 
+  { key: 'INTJ', image: require('../../assets/images/char_images/intj.png') },
   { key: 'INTP', image: require('../../assets/images/char_images/intp.png') },
   { key: 'ENTJ', image: require('../../assets/images/char_images/entj.png') },
   { key: 'ENTP', image: require('../../assets/images/char_images/entp.png') },
@@ -26,22 +26,23 @@ const ShowMBTIScreen = () => {
       {/* Logo at the top left */}
       <View style={styles.logoContainer}>
         <Image
-          source={require('../../assets/images/logo.png')} 
+          source={require('../../assets/images/logo.png')}
           style={styles.logo}
         />
       </View>
 
       {/* Grid Layout */}
-      <TouchableOpacity >
-      <View style={styles.container}>
-        {data.map((item) => (
-          <View key={item.key} style={styles.itemContainer}>
-            <Image source={item.image} style={styles.image} />
-            <Text style={styles.label}>{item.key}</Text>
-          </View>
-        ))}
+      <View>
+        <View style={styles.container}>
+          {data.map((item) => (
+            <TouchableOpacity key={item.key} style={styles.itemContainer}>
+              <Image source={item.image} style={styles.image} />
+              <Text style={styles.label}>{item.key}</Text>
+            </TouchableOpacity>
+          ))}
+        </View>
       </View>
-      </TouchableOpacity>
+
     </View>
   );
 };
@@ -52,16 +53,16 @@ const ShowMBTIScreen = () => {
 const styles = StyleSheet.create({
   mainContainer: {
     flex: 1,
-    paddingTop: 20, 
+    paddingTop: 20,
   },
   logoContainer: {
     flexDirection: 'row', // Align logo to the left
     justifyContent: 'flex-start', // Align to the start (left)
-    paddingLeft: 10,  
-    marginBottom: 20, 
+    paddingLeft: 10,
+    marginBottom: 20,
   },
   logo: {
-    width: 100, 
+    width: 100,
     height: 100,
   },
   container: {
@@ -73,12 +74,12 @@ const styles = StyleSheet.create({
   itemContainer: {
     width: '22%', // Adjust width to fit the grid (approximately 4 per row)
     marginVertical: 10, // Space between the items
-    alignItems: 'center', 
+    alignItems: 'center',
   },
   image: {
-    width: 50, 
+    width: 50,
     height: 80,
-    marginBottom: 25, 
+    marginBottom: 25,
   },
   label: {
     fontSize: 14,
@@ -92,8 +93,8 @@ const styles = StyleSheet.create({
     backgroundColor: "#fafafa",
     elevation: 5,
     borderRadius: 20,
-},
+  },
 });
-  
-  export default ShowMBTIScreen;
+
+export default ShowMBTIScreen;
 

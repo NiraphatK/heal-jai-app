@@ -6,6 +6,7 @@ import QuestionScreen from '../HomeScreen/QuestionScreen'
 import ShowMBTIScreen from '../HomeScreen/ShowMBTIScreen'
 import { MyTabBar } from '../../components/BottomTabs/MyTabBar'
 import DetailScreen from '../DetailScreen/DetailScreen'
+import ResultScreen from '../HomeScreen/ResultScreen'
 
 
 const Stack = createStackNavigator()
@@ -16,6 +17,7 @@ const HomeStackScreen = () => {
       <Stack.Screen name="HomeScreen" component={HomeScreen} />
       <Stack.Screen name="QuestionScreen" component={QuestionScreen} />
       <Stack.Screen name="ShowMBTIScreen" component={ShowMBTIScreen} />
+      <Stack.Screen name="ResultScreen" component={ResultScreen} />
     </Stack.Navigator>
 
   )
