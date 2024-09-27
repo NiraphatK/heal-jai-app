@@ -14,7 +14,17 @@ const userSchema = mongoose.Schema({
     },
     history:{
         type:[String],
-    }
+    },
+    score:{
+        E: { type: Number},
+        I: { type: Number},
+        S: { type: Number},
+        N: { type: Number},
+        T: { type: Number},
+        F: { type: Number},
+        J: { type: Number},
+        P: { type: Number},
+    },
 }, { versionKey: false })
 
 module.exports = mongoose.model('users', userSchema);

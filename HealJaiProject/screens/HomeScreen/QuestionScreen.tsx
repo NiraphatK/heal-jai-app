@@ -14,6 +14,8 @@ import { ScrollView } from "react-native-gesture-handler";
 import { QUESTIONS } from "./Question";
 import { useFonts } from "expo-font";
 import { useNavigation } from "@react-navigation/native";
+import AsyncStorage from "@react-native-async-storage/async-storage";
+import { updateResultScore } from "../../services/product-service";
 
 // Constants for size and color of options
 const SIZES = [30, 25, 20, 15, 20, 25, 30];
@@ -27,6 +29,17 @@ const COLORS = [
   "#33A474", // Strongly Agree
 ];
 
+interface scoreType {
+  E: number;
+  I: number;
+  S: number;
+  N: number;
+  T: number;
+  F: number;
+  J: number;
+  P: number;
+}
+
 const QuestionScreen = () => {
   const navigation = useNavigation<any>();
 
@@ -37,6 +50,8 @@ const QuestionScreen = () => {
     "Prompt-Light": require("../../assets/fonts/Prompt-Light.ttf"),
   });
 
+  const [users,setUsers] = useState<string>()
+  
   if (!loaded) {
     return <ActivityIndicator size="large" />;
   }
@@ -53,17 +68,84 @@ const QuestionScreen = () => {
     setSelectedOptions(updatedOptions); // Update state
   };
 
+  const updateScore = async (userID: string, score: scoreType, type: string) => {
+    try {
+        await updateResultScore(userID, score, type);
+    } catch (error) {
+        console.error('Error updating score:', error);
+    }
+};
 
-  // Function to handle form submission
-  const handleSubmit = () => {
+const getMBTIType = async () => {
+    let E = 0, I = 0, S = 0, N = 0, T = 0, F = 0, J = 0, P = 0;
+  
+    selectedOptions.forEach((optionIndex: any, questionIndex: any) => {
+      const questionType = QUESTIONS[questionIndex].type;
+      const score = optionIndex - 3;
+  
+      switch (questionType) {
+        case 'EI':
+          if (score > 0) E += score; 
+          else I -= score;          
+          break;
+        case 'SN':
+          if (score > 0) S += score;
+          else N -= score;
+          break;
+        case 'TF':
+          if (score > 0) T += score;
+          else F -= score;
+          break;
+        case 'JP':
+          if (score > 0) J += score;
+          else P -= score;
+          break;
+      }
+    });
+  
+    const EI = E >= I ? 'E' : 'I';
+    const SN = S >= N ? 'S' : 'N';
+    const TF = T >= F ? 'T' : 'F';
+    const JP = J >= P ? 'J' : 'P';
+  
+    const score = {
+      E: E,
+      I: I,
+      S: S,
+      N: N,
+      T: T,
+      F: F,
+      J: J,
+      P: P,
+    };
+  
+    const type = EI + SN + TF + JP;
+  
+    // ดึง userID จาก AsyncStorage
+    const storedUserID = await AsyncStorage.getItem('userID');
+    if (storedUserID === null) {
+      console.error('User ID not found in AsyncStorage');
+      return;
+    }
+
+    // เรียกใช้ updateScore พร้อมกับ userID โดยตรง
+    await updateScore(storedUserID, score, type);
+  
+    return storedUserID; // ส่ง userID กลับมาหลังจากทำงานเสร็จ
+};
+
+const handleSubmit = async () => {
     if (selectedOptions.includes(-1)) {
       Alert.alert("Error", "กรุณาตอบคำถามทั้งหมดให้เสร็จสิ้น");
     } else {
-      navigation.navigate({name:'ResultScreen',params:{data :selectedOptions}})
-      // const mbtiType = getMBTIType();
-      // Alert.alert("Your MBTI Result", `Your personality type is: ${mbtiType}`);
+      const userID = await getMBTIType(); // รอการคำนวณและส่งข้อมูลเสร็จ
+
+      if (userID) { // ตรวจสอบว่ามี userID ก่อนนำทาง
+        navigation.navigate('ResultScreen', { user_id: userID }); // นำทางไปยัง ResultScreen พร้อมกับ userID
+      }
     }
-  };
+};
+
 
   return (
     <SafeAreaView style={styles.container}>

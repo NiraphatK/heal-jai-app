@@ -49,7 +49,7 @@ const HomeScreen = (): React.JSX.Element => {
         // สำหรับสร้าง userID เมื่อเข้าแอปมาครั้งแรกเท่านั้น เมื่อปิดแอปและเปิดใหม่ทางระบบจะไปเช็ค ใน AsyncStorage ว่าเคยมี userID สร้างไว้รึป่าวถ้ามีก็จะเรียกมาใช้ ถ้าไม่มีก็จะสร้างใหม่
         const checkOrCreateUserID = async () => {
             try {
-                const storedUserID = await AsyncStorage.getItem('userID');
+                const storedUserID = await AsyncStorage.getItem('userID');                
                 if (storedUserID) {
                     setUserID(storedUserID);
                     getUser(storedUserID)

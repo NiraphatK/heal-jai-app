@@ -326,6 +326,7 @@ app.post('/register', async (req, res) => {
         mbti_type: "",
         favorite: [null],
         history: [null],
+        score: [null],
       });
 
       userCreate.save();
@@ -366,39 +367,37 @@ app.get('/book/:id', async (req, res) => {
   }
 });
 
-app.post('/addtest', async (req, res) => {
+
+app.get('/mbti/:id', async (req, res) => {
   try {
-      const { user_id } = req.body;
-
-      // Fetch all book data
-      let bookcreatePromises = [];
-
-      // Loop through the books and create new book entries with rating 0
-      data.forEach((data) => {
-        let newBook = new Books({
-          title: data.title,
-          type: data.type,
-          author: data.author,
-          cover: data.cover,
-          synopsis: data.synopsis,
-          rating: Math.floor(Math.random()*11)
-        });
-        // Store each save promise to await later
-        bookcreatePromises.push(newBook.save());
-      });
-
-      // Await all save operations
-      await Promise.all(bookcreatePromises);
-
-      // Send success response
-      res.status(201).json({ message: "Successfully inserted books" });
+    const title = req.params.id;
+    const mbtiData = await Mbti_types.findOne({name:'INFJ'});
+    res.status(201).json(mbtiData);
 
   } catch (err) {
-    console.error('Failed to register book:', err);
+    console.error('Failed to get book by name:', err); // พิมพ์ข้อผิดพลาด
     res.status(500).json({ message: "Failed to register book", error: err });
   }
 });
 
+
+app.post('/update', async (req, res) => {
+  try {
+      const {user_id,score,type} = req.body
+
+      let updateScore = await Users.findOneAndUpdate({user_id: user_id},{mbti_type:type,score:score});
+      
+      if (!updateScore) {
+        return res.status(404).json({ message: "User not found" });
+      }
+
+      res.status(200).json({ message: "User data is updated!!" });
+
+  } catch (err) {
+    console.error('Failed to update score:', err); // แสดงข้อผิดพลาด
+    res.status(500).json({ message: "Failed to update score", error: err });
+  }
+});
 
 
 app.listen(port, () => {

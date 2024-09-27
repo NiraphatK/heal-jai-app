@@ -13,7 +13,7 @@ const Stack = createStackNavigator()
 
 const HomeStackScreen = () => {
   return (
-    <Stack.Navigator initialRouteName='HomeScreen' screenOptions={{headerShown:false}}>
+    <Stack.Navigator initialRouteName='ResultScreen' screenOptions={{headerShown:false}}>
       <Stack.Screen name="HomeScreen" component={HomeScreen} />
       <Stack.Screen name="QuestionScreen" component={QuestionScreen} />
       <Stack.Screen name="ShowMBTIScreen" component={ShowMBTIScreen} />
