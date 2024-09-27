@@ -27,18 +27,43 @@ const styles = StyleSheet.create({
         flexDirection:'row',
         padding:10,
     },
+    containerCatagoryButton:{
+        marginVertical:15,
+        marginStart:4,
+        flexDirection:'row',
+    },
+    buttonCatagory:{
+        marginEnd:10,
+        padding:5,
+    },
+    buttonCatagoryActive:{
+        marginEnd:10,
+        padding:5,
+        borderBottomWidth:3,
+        borderBottomColor:'#716868',
+    },
     item:{
+        width:110,
         position:'relative',
         marginRight:10,
+        overflow:'hidden',
+    },
+    containerItemImage:{
+        zIndex:-1,
+        borderWidth:1,
+        borderColor:'gray',
+        borderRadius:5,
     },
     itemImage:{
         height:80,
         width:110,
         borderRadius:5,
-        zIndex:-1,
     },
     subTitle:{
         padding:5,
+    },
+    scrollView:{
+        marginBottom:50,
     },
 })
 

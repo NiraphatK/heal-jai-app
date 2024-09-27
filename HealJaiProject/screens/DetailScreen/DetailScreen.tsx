@@ -22,6 +22,7 @@ type bookType = {
   author: string,
   cover: string,
   synopsis: string,
+  rating:number
 }
 
 
@@ -60,7 +61,7 @@ const DetailScreen = (): React.JSX.Element => {
     <View style={styles.container}>
       <View style={styles.container}>
         <ImageBackground
-          source={require("./cover.jpg")}
+          source={{uri:bookData?.cover}}
           style={styles.backgroundImage}
           blurRadius={7}
         >
@@ -74,19 +75,19 @@ const DetailScreen = (): React.JSX.Element => {
           </TouchableOpacity>
           <View style={[styles.container, { alignItems: "center" }]}>
             <Image
-              source={require("./cover.jpg")}
+              source={{uri:bookData?.cover}}
               style={styles.bookCover}
             ></Image>
             <Text style={[styles.name]}>
-              Games You Can Play With Your Pussy
+              {bookData?.title}
             </Text>
-            <Text style={styles.author}>Ira Alterman</Text>
+            <Text style={styles.author}>{bookData?.author}</Text>
             <View style={{ flexDirection: "row", alignItems: "center" }}>
               <Ionicons name="bookmark-outline" size={20} style={{}}>
                 {"     "}
               </Ionicons>
               <Ionicons name="heart" size={20} color="#bf2525"></Ionicons>
-              <Text style={{ fontSize: 16 }}> 10/10</Text>
+              <Text style={{ fontSize: 16 }}> {bookData?.rating}/10</Text>
             </View>
           </View>
         </ImageBackground>
@@ -97,26 +98,20 @@ const DetailScreen = (): React.JSX.Element => {
         </Text>
         <View style={{ flexDirection: "row", paddingVertical: 15 }}>
           <View style={styles.MBTI}>
-            <Text style={styles.MBTIText}>INFJ</Text>
+            <Text style={styles.MBTIText}>{bookData?.type[0]}</Text>
           </View>
           <View style={[styles.MBTI, { marginStart: 15 }]}>
-            <Text style={styles.MBTIText}>INFJ</Text>
+            <Text style={styles.MBTIText}>{bookData?.type[1]}</Text>
           </View>
           <View style={[styles.MBTI, { marginStart: 15 }]}>
-            <Text style={styles.MBTIText}>ENFJ</Text>
+            <Text style={styles.MBTIText}>{bookData?.type[2]}</Text>
           </View>
         </View>
         <Text style={[styles.detailTitle, { fontFamily: "Prompt-Bold" }]}>
           เนื้อเรื่องโดยย่อ
         </Text>
         <Text style={[styles.detail, { fontFamily: "Prompt-Regular" }]}>
-          เนื้อเรื่องส่วนมากจะเกี่ยวกับปัญหาของโนบิตะเด็กชายชั้น ป.4
-          ที่มักถูกเพื่อนๆ แกล้ง (แต่บ่อยครั้งก็เป็นฝ่ายหาเรื่องใส่ตัวเอง)
-          ไม่ค่อยชอบทำการบ้าน, อ่านหนังสือ และไปโรงเรียนสายบ่อย ๆ
-          โดยมีเพื่อนที่เป็นตัวละครสำคัญในเรื่องคือโดราเอมอน
-          (โนบิตะทำอะไรไม่ค่อยเป็น ต้องพึ่งโดราเอมอนแทบทุกอย่าง)
-          หุ่นยนต์แมวจากอนาคตที่คอยดูแลช่วยเหลือโนบิตะตลอดเวลา
-          ด้วยของวิเศษจากอนาคต
+          {bookData?.synopsis}
         </Text>
       </View>
     </View>

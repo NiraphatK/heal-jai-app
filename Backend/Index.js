@@ -353,6 +353,15 @@ app.get('/book', async (req, res) => {
   }
 });
 
+app.get('/book/top10', async (req, res) => {
+  try {
+    const bookData = await Books.find().sort({ rating: -1 }).limit(10);
+    res.status(201).json(bookData);
+  } catch (err) {
+    res.status(500).send(err);
+  }
+});
+
 
 app.get('/book/:id', async (req, res) => {
   try {
