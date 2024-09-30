@@ -7,13 +7,14 @@ const styles = StyleSheet.create({
   backgroundImage: {
     flex: 1,
     resizeMode: "stretch",
-    height: 300,
+    height: 250,
   },
   bookCover: {
     padding: 10,
     marginTop: 50,
-    height: 225,
+    height: 230,
     width: 170,
+    borderRadius:10
   },
   name: {
     padding: 10,

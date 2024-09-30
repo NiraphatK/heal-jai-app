@@ -31,7 +31,23 @@ export function MyTabBar({ state, descriptors, navigation }: BottomTabBarProps) 
 
     useEffect(() => {
         const currentRoute = state.routes[state.index];
-        if (currentRoute.state?.routes[1]?.name === 'QuestionScreen' && state.index === 0) {
+        tabPositionX.value = withTiming(buttonWidth * state.index, { duration: 150 })
+        let chkScreen = 0
+        
+        currentRoute.state?.routes.map((item)=>{
+            if (item.name === 'ShowMBTIScreen') {
+                chkScreen+=1
+            } else if (item.name === 'MbtiCharScreen') {
+                chkScreen+=1
+            } else if (item.name === 'ResultScreen') {
+                chkScreen+=1
+            }
+        })
+
+        if (chkScreen===3 || chkScreen===2) {
+            setTabbarDisplay('none');
+        }
+        else if (currentRoute.state?.routes[1]?.name === 'QuestionScreen' && state.index === 0 || currentRoute.state?.routes[1]?.name === 'ResultScreen'  ) {
             setTabbarDisplay('none');
         } else {
             setTabbarDisplay('flex');

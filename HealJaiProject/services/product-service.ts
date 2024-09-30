@@ -23,6 +23,7 @@ export async function findMbtiByName(name:string): Promise<AxiosResponse<any>> {
   }
 }
 
+
 export async function createUserById(id:string): Promise<AxiosResponse<any>> {
     try {
       const response = await http.post<any>(
@@ -70,7 +71,19 @@ export async function findBookByName(title:string): Promise<AxiosResponse<any>> 
   export async function updateResultScore(user_id:string,score:any,type:string): Promise<AxiosResponse<any>> {
     try {
       const response = await http.post<any>(
-        "http://10.0.2.2:5000/update",{user_id:user_id,score:score,type:type}
+        "http://10.0.2.2:5000/update/score",{user_id:user_id,score:score,type:type}
+      );
+      return response;
+    } catch (error) {
+      throw error;
+    }
+  }
+
+
+  export async function updateFavoriteBook(user_id:string,book_name:string): Promise<AxiosResponse<any>> {
+    try {
+      const response = await http.post<any>(
+        "http://10.0.2.2:5000/update/favorite",{user_id:user_id,book_name:book_name}
       );
       return response;
     } catch (error) {

@@ -11,8 +11,8 @@ import {
 } from "../../services/product-service";
 import DetailScreen from "../DetailScreen/DetailScreen";
 import { useNavigation } from "@react-navigation/native";
-import axios from "axios";
 import AsyncStorage from "@react-native-async-storage/async-storage";
+import { GetImage } from "../../components/GetImage";
 
 //
 type BooksItem = {
@@ -22,7 +22,7 @@ type BooksItem = {
   author: string;
   cover: string;
   synopsis: string;
-  rating: number;
+  rating: number
 };
 
 type Users = {
@@ -30,6 +30,16 @@ type Users = {
   mbti_type: string;
   favorite: string[];
   history: string[];
+  score: {
+    E: { type: Number },
+    I: { type: Number },
+    S: { type: Number },
+    N: { type: Number },
+    T: { type: Number },
+    F: { type: Number },
+    J: { type: Number },
+    P: { type: Number },
+  };
 };
 
 const LibraryScreen: React.FC = (): React.JSX.Element => {
@@ -43,6 +53,7 @@ const LibraryScreen: React.FC = (): React.JSX.Element => {
   const [recommendBooks, setRecommendBooks] = useState<BooksItem[]>([]);
   const [recentBooks, setRecentBooks] = useState<BooksItem[]>([]);
   const [buttonActive, setButtonActive] = useState("รีวิวดี");
+  const [onRefresh, setOnRefresh] = useState(true)
 
   // arrary
   const catagories = [
@@ -55,18 +66,38 @@ const LibraryScreen: React.FC = (): React.JSX.Element => {
     "ISTJ",
   ];
 
-  //function
+  // function
   const getRecommendBooks = async () => {
-    const response = await findTop10();
-    setRecommendBooks(response.data);
+    setOnRefresh(true); // Start refreshing
+    try {
+      const response = await findTop10();
+      setRecommendBooks(response.data);
+    } catch (error) {
+      console.error("Error fetching recommended books:", error);
+    } finally {
+      setOnRefresh(false); // End refreshing
+    }
   };
+
+
   const getUserRecentBooks = async () => {
-    const userID: any = await AsyncStorage.getItem("userID");
-    const response = await findUserById(userID);
-    // console.log(response.data)
-    setUser(response.data);
-    // console.log(user)
+    setOnRefresh(true);
+    try {
+      const userID: any = await AsyncStorage.getItem("userID");
+      if (userID) {
+        const response = await findUserById(userID);
+        setUser(response.data);
+      } else {
+        console.warn("No user ID found");
+      }
+    } catch (error) {
+      console.error("Error fetching user data:", error);
+    } finally {
+      setOnRefresh(false);
+    }
   };
+  
+
   const handlePressBook = async (item: BooksItem) => {
     navigation.navigate({ name: "DetailScreen", params: { data: item.title } });
   };
@@ -103,13 +134,15 @@ const LibraryScreen: React.FC = (): React.JSX.Element => {
   const _renderItemRecommend = ({ item }: { item: BooksItem }) => {
     return (
       <View style={styles.item}>
-        <FavButton />
+        <View style={{ position: 'absolute', right: 10 }}>
+          <FavButton bookName={item?.title} />
+        </View>
         <TouchableOpacity
           style={styles.containerItemImage}
           onPress={() => handlePressBook(item)}
         >
           <Image
-            source={{ uri: item.cover }}
+            source={GetImage(item.title)}
             style={styles.itemImage}
             resizeMode="contain"
           />
@@ -120,16 +153,20 @@ const LibraryScreen: React.FC = (): React.JSX.Element => {
       </View>
     );
   };
+
+
   const _renderItemRecent = ({ item }: { item: BooksItem }) => {
     return (
       <View style={styles.item}>
-        <FavButton />
+        <View style={{ position: 'absolute', right: 10 }}>
+          <FavButton bookName={item?.title} />
+        </View>
         <TouchableOpacity
           style={styles.containerItemImage}
           onPress={() => handlePressBook(item)}
         >
           <Image
-            source={{ uri: item.cover }}
+            source={GetImage(item.title)}
             style={styles.itemImage}
             resizeMode="contain"
           />
@@ -143,6 +180,7 @@ const LibraryScreen: React.FC = (): React.JSX.Element => {
 
   return (
     <View style={styles.container}>
+
       {/* Header Logo */}
       <View style={styles.header}>
         <Image
@@ -150,35 +188,33 @@ const LibraryScreen: React.FC = (): React.JSX.Element => {
           style={styles.imageLogo}
         />
       </View>
-      {/* <ScrollView style={styles.scrollView}> */}
+
       {/* Recommend */}
       <View style={styles.containerContent}>
-        <Text style={styles.title}>สำหรับคุณ Test test</Text>
+        <Text style={styles.title}>สำหรับคุณ</Text>
         <FlatList
           data={recommendBooks}
           renderItem={_renderItemRecommend}
           keyExtractor={(item) => item._id}
           contentContainerStyle={styles.containerItem}
           horizontal
+          refreshing={onRefresh} // Connect the refreshing state
+          onRefresh={getRecommendBooks} // Call the getRecommendBooks function on refresh
         />
       </View>
 
       {/* read lasted */}
       <View style={styles.containerContent}>
         <Text style={styles.title}>อ่านล่าสุด</Text>
-        {/* <View style={styles.containerItem}>
-          <View style={styles.item}>
-            <FavButton />
-            <TouchableOpacity
-              style={styles.containerItemImage}
-              onPress={() => handlePressBook("The Alchemist")}
-            >
-              <Image source={image1} style={styles.itemImage} />
-            </TouchableOpacity>
-            <Text style={styles.subTitle}>asdf</Text>
-          </View>
-        </View> */}
-        <FlatList data={recentBooks} renderItem={_renderItemRecent} />
+        <FlatList
+          data={recentBooks}
+          renderItem={_renderItemRecent}
+          keyExtractor={(item) => item._id}
+          contentContainerStyle={styles.containerItem}
+          horizontal
+          refreshing={onRefresh} // Connect the refreshing state
+          onRefresh={getUserRecentBooks}
+        />
       </View>
       {/* Ranking */}
       <View style={styles.containerContent}>
@@ -203,11 +239,12 @@ const LibraryScreen: React.FC = (): React.JSX.Element => {
         </View>
         <View style={[styles.containerItem, { flexWrap: "wrap" }]}>
           <View style={styles.item}>
-            <FavButton />
+            <View style={{ position: 'absolute', right: 10 }}>
+              <FavButton bookName={''} />
+            </View>
             <TouchableOpacity style={styles.containerItemImage}>
               <Image source={image2} style={styles.itemImage} />
             </TouchableOpacity>
-            <Text style={styles.subTitle}>asdf</Text>
           </View>
         </View>
       </View>

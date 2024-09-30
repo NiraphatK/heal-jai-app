@@ -5,8 +5,11 @@ import OcIcon from '@expo/vector-icons/Octicons';
 import FeatherIcon from '@expo/vector-icons/Feather';
 import Ionicons from '@expo/vector-icons/Ionicons';
 import { useFonts } from 'expo-font';
+import { useNavigation } from '@react-navigation/native';
 
 const OtherScreen = () => {
+  const navigation = useNavigation<any>()
+
   return (
     //header
     <View style={styles.container}>
@@ -17,7 +20,7 @@ const OtherScreen = () => {
         />
       </View>
 
-       {/* Buttons */}
+      {/* Buttons */}
       <View style={styles.buttonsContainer}>
         <View style={styles.row}>
           <TouchableOpacity style={styles.button}>
@@ -28,7 +31,7 @@ const OtherScreen = () => {
             <OcIcon name="bookmark" size={36} color="black" />
             <Text style={styles.buttonText}>รายการโปรด</Text>
           </TouchableOpacity>
-          <TouchableOpacity style={styles.button}>
+          <TouchableOpacity style={styles.button} onPress={() => navigation.navigate('Home', { screen: 'ResultScreen' })}>
             <OcIcon name="person" size={36} color="black" />
             <Text style={styles.buttonText}>MBTI ของฉัน</Text>
           </TouchableOpacity>
@@ -39,20 +42,20 @@ const OtherScreen = () => {
         </View>
 
         <View style={styles.row}>
-          <TouchableOpacity style={styles.button}>
+          <TouchableOpacity style={styles.button} onPress={() => navigation.navigate('HelpScreen')}>
             <OcIcon name="info" size={36} color="black" />
             <Text style={styles.buttonText}>ศูนย์ช่วยเหลือ</Text>
           </TouchableOpacity>
-          <TouchableOpacity style={styles.button}>
+          <TouchableOpacity style={styles.button} onPress={() => navigation.navigate('ReportScreen')}>
             <OcIcon name="report" size={36} color="black" />
             <Text style={styles.buttonText}>รายงานปัญหา</Text>
           </TouchableOpacity>
           <TouchableOpacity style={styles.button}>
-            <OcIcon name="shield-check" size={36} color="black" />
+            <OcIcon name="shield-check" size={36} color="black" onPress={() => navigation.navigate('SecurityScreen')}/>
             <Text style={styles.buttonText}>ความปลอดภัย</Text>
           </TouchableOpacity>
-          <TouchableOpacity style={styles.button}>
-            <OcIcon name="checklist" size={36} color="black" />
+          <TouchableOpacity style={styles.button} onPress={() => navigation.navigate('TosScreen')}>
+            <OcIcon name="checklist" size={36} color="black"/>
             <Text style={styles.buttonText}>ข้อกำหนดนโยบาย</Text>
           </TouchableOpacity>
         </View>

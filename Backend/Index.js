@@ -324,18 +324,27 @@ app.post('/register', async (req, res) => {
       let userCreate = new Users({
         user_id: user_id,
         mbti_type: "",
-        favorite: [null],
-        history: [null],
-        score: [null],
+        favorite: [],
+        history: [],
+        score: {
+          E: 0,
+          I: 0,
+          S: 0,
+          N: 0,
+          T: 0,
+          F: 0,
+          J: 0,
+          P: 0,
+      },
       });
 
       userCreate.save();
 
-    res.status(201).json({ message: "Book registered successfully"});
+    res.status(201).json({ message: "User registered successfully"});
 
   } catch (err) {
     console.error('Failed to register book:', err); // พิมพ์ข้อผิดพลาด
-    res.status(500).json({ message: "Failed to register book", error: err });
+    res.status(500).json({ message: "Failed to register user", error: err });
   }
 });
 
@@ -377,20 +386,25 @@ app.get('/book/:id', async (req, res) => {
 });
 
 
-app.get('/mbti/:id', async (req, res) => {
+app.get('/mbti/:type', async (req, res) => {
   try {
-    const title = req.params.id;
-    const mbtiData = await Mbti_types.findOne({name:'INFJ'});
-    res.status(201).json(mbtiData);
+    const mbtiType = req.params.type.toUpperCase(); // ดึงประเภท MBTI จาก URL และแปลงเป็นตัวพิมพ์ใหญ่
+    const mbtiData = await Mbti_types.findOne({}, { [mbtiType]: 1 }); // ค้นหาข้อมูลประเภทที่ระบุ
 
+    if (!mbtiData || !mbtiData[mbtiType]) {
+      return res.status(404).json({ message: "MBTI type not found" }); // ถ้าไม่พบประเภทที่ระบุ
+    }
+    
+    res.status(200).json(mbtiData[mbtiType]); // ส่งข้อมูล MBTI กลับไป
   } catch (err) {
-    console.error('Failed to get book by name:', err); // พิมพ์ข้อผิดพลาด
-    res.status(500).json({ message: "Failed to register book", error: err });
+    console.error('Failed to get MBTI type:', err); // พิมพ์ข้อผิดพลาด
+    res.status(500).json({ message: "Failed to retrieve MBTI type", error: err });
   }
 });
 
 
-app.post('/update', async (req, res) => {
+
+app.post('/update/score', async (req, res) => {
   try {
       const {user_id,score,type} = req.body
 
@@ -399,12 +413,33 @@ app.post('/update', async (req, res) => {
       if (!updateScore) {
         return res.status(404).json({ message: "User not found" });
       }
-
+      
+      
       res.status(200).json({ message: "User data is updated!!" });
 
   } catch (err) {
     console.error('Failed to update score:', err); // แสดงข้อผิดพลาด
     res.status(500).json({ message: "Failed to update score", error: err });
+  }
+});
+
+
+app.post('/update/favorite', async (req, res) => {
+  try {
+      const {user_id,book_name} = req.body
+
+      let updateFavorite = await Users.findOneAndUpdate({user_id: user_id},{ $push: { favorite: book_name } });
+      
+      if (!updateFavorite) {
+        return res.status(404).json({ message: "User not found" });
+      }
+
+      
+      res.status(200).json({ message: "Favorite data is updated!!" });
+
+  } catch (err) {
+    console.error('Failed to update score:', err); // แสดงข้อผิดพลาด
+    res.status(500).json({ message: "Failed to update favorite", error: err });
   }
 });
 

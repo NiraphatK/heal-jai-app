@@ -1,5 +1,7 @@
+import { useNavigation } from '@react-navigation/native';
+import { useFonts } from 'expo-font';
 import React from 'react';
-import { View, Text, Image, FlatList, StyleSheet, TouchableOpacity } from 'react-native';
+import { View, Text, Image, FlatList, StyleSheet, TouchableOpacity, ActivityIndicator } from 'react-native';
 
 const data = [
   { key: 'INTJ', image: require('../../assets/images/char_images/intj.png') },
@@ -21,6 +23,8 @@ const data = [
 ];
 
 const ShowMBTIScreen = () => {
+  const navigation = useNavigation<any>()
+  
   return (
     <View style={styles.mainContainer}>
       {/* Logo at the top left */}
@@ -35,7 +39,7 @@ const ShowMBTIScreen = () => {
       <View>
         <View style={styles.container}>
           {data.map((item) => (
-            <TouchableOpacity key={item.key} style={styles.itemContainer}>
+            <TouchableOpacity key={item.key} style={styles.itemContainer} onPress={() => navigation.navigate('MbtiCharScreen', { mbti_name: item.key })}>
               <Image source={item.image} style={styles.image} />
               <Text style={styles.label}>{item.key}</Text>
             </TouchableOpacity>

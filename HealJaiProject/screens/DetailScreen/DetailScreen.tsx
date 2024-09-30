@@ -15,14 +15,16 @@ import {
   useRoute,
 } from "@react-navigation/native";
 import { findBookByName } from "../../services/product-service";
+import { GetImage } from "../../components/GetImage";
+import FavButton from "../../components/FavButton";
 
 type bookType = {
   title: string,
-  type: string,
+  type: string[],
   author: string,
   cover: string,
   synopsis: string,
-  rating:number
+  rating: number
 }
 
 
@@ -31,7 +33,7 @@ const DetailScreen = (): React.JSX.Element => {
   const navigation = useNavigation<any>();
   const [bookData, setBookData] = useState<bookType>()
 
-  const { data } = route.params;
+  const { data, state } = route.params;
 
   const [loaded] = useFonts({
     "Prompt-Regular": require("../../assets/fonts/Prompt-Regular.ttf"),
@@ -53,6 +55,10 @@ const DetailScreen = (): React.JSX.Element => {
     getBook()
   }, [navigation])
 
+  const handleNavigation = () => {
+    return state === "FavoriteScreen" ? navigation.navigate('Favorite') : navigation.goBack()
+  }
+
   if (!loaded) {
     return <ActivityIndicator />;
   }
@@ -61,11 +67,11 @@ const DetailScreen = (): React.JSX.Element => {
     <View style={styles.container}>
       <View style={styles.container}>
         <ImageBackground
-          source={{uri:bookData?.cover}}
+          source={GetImage(data)}
           style={styles.backgroundImage}
           blurRadius={7}
         >
-          <TouchableOpacity onPress={() => navigation.goBack()}>
+          <TouchableOpacity onPress={() => handleNavigation()}>
             <Ionicons
               name="chevron-back-outline"
               size={40}
@@ -75,37 +81,35 @@ const DetailScreen = (): React.JSX.Element => {
           </TouchableOpacity>
           <View style={[styles.container, { alignItems: "center" }]}>
             <Image
-              source={{uri:bookData?.cover}}
+              source={GetImage(data)}
               style={styles.bookCover}
             ></Image>
             <Text style={[styles.name]}>
               {bookData?.title}
             </Text>
             <Text style={styles.author}>{bookData?.author}</Text>
-            <View style={{ flexDirection: "row", alignItems: "center" }}>
-              <Ionicons name="bookmark-outline" size={20} style={{}}>
-                {"     "}
-              </Ionicons>
-              <Ionicons name="heart" size={20} color="#bf2525"></Ionicons>
-              <Text style={{ fontSize: 16 }}> {bookData?.rating}/10</Text>
+            <View style={{ flexDirection: "row", alignItems: "center", justifyContent: 'center', marginTop: 10 }}>
+              <View style={{ marginRight: 20 }}>
+                <FavButton bookName={data} />
+              </View>
+              <View style={{ marginLeft: 20, flexDirection: "row", alignItems: "center", justifyContent: 'center' }}>
+                <Ionicons name="heart" size={20} color="#bf2525"></Ionicons>
+                <Text style={{ fontSize: 16 }}> {bookData?.rating}/10</Text>
+              </View>
             </View>
           </View>
         </ImageBackground>
       </View>
-      <View style={[styles.container, { paddingHorizontal: 30 }]}>
+      <View style={[styles.container, { paddingHorizontal: 30, marginTop: 40 }]}>
         <Text style={{ marginTop: 20, fontFamily: "Prompt-Regular" }}>
           เหมาะกับ
         </Text>
         <View style={{ flexDirection: "row", paddingVertical: 15 }}>
-          <View style={styles.MBTI}>
-            <Text style={styles.MBTIText}>{bookData?.type[0]}</Text>
-          </View>
-          <View style={[styles.MBTI, { marginStart: 15 }]}>
-            <Text style={styles.MBTIText}>{bookData?.type[1]}</Text>
-          </View>
-          <View style={[styles.MBTI, { marginStart: 15 }]}>
-            <Text style={styles.MBTIText}>{bookData?.type[2]}</Text>
-          </View>
+          {bookData?.type.map((item, index) => (
+            <View style={[styles.MBTI, index !== 0 && { marginStart: 15 }]} key={index}>
+              <Text style={styles.MBTIText}>{item}</Text>
+            </View>
+          ))}
         </View>
         <Text style={[styles.detailTitle, { fontFamily: "Prompt-Bold" }]}>
           เนื้อเรื่องโดยย่อ

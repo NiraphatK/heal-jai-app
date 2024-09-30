@@ -7,16 +7,18 @@ import ShowMBTIScreen from '../HomeScreen/ShowMBTIScreen'
 import { MyTabBar } from '../../components/BottomTabs/MyTabBar'
 import DetailScreen from '../DetailScreen/DetailScreen'
 import ResultScreen from '../HomeScreen/ResultScreen'
+import MbtiCharScreen from '../HomeScreen/MbtiCharScreen'
 
 
 const Stack = createStackNavigator()
 
 const HomeStackScreen = () => {
   return (
-    <Stack.Navigator initialRouteName='ResultScreen' screenOptions={{headerShown:false}}>
+    <Stack.Navigator initialRouteName='HomeScreen' screenOptions={{headerShown:false}}>
       <Stack.Screen name="HomeScreen" component={HomeScreen} />
       <Stack.Screen name="QuestionScreen" component={QuestionScreen} />
       <Stack.Screen name="ShowMBTIScreen" component={ShowMBTIScreen} />
+      <Stack.Screen name="MbtiCharScreen" component={MbtiCharScreen} />
       <Stack.Screen name="ResultScreen" component={ResultScreen} />
     </Stack.Navigator>
 

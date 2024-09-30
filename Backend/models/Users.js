@@ -16,14 +16,14 @@ const userSchema = mongoose.Schema({
         type:[String],
     },
     score:{
-        E: { type: Number},
-        I: { type: Number},
-        S: { type: Number},
-        N: { type: Number},
-        T: { type: Number},
-        F: { type: Number},
-        J: { type: Number},
-        P: { type: Number},
+        E: { type: Number, default: 0 },
+        I: { type: Number, default: 0 },
+        S: { type: Number, default: 0 },
+        N: { type: Number, default: 0 },
+        T: { type: Number, default: 0 },
+        F: { type: Number, default: 0 },
+        J: { type: Number, default: 0 },
+        P: { type: Number, default: 0 },
     },
 }, { versionKey: false })
 
