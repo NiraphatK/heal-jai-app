@@ -6,7 +6,7 @@
   <p align="center">
     An MBTI-based book recommendation app built with React Native and Node.js.
     <br />
-    <a href="https://github.com/NatrinT/SoftwareEngineerProject"><strong>Explore the docs »</strong></a>
+    <a href="#"><strong>Explore the docs »</strong></a>
     <br /><br />
   </p>
 </div>
