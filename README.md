@@ -5,25 +5,11 @@
 
   <p align="center">
     An MBTI-based book recommendation app built with React Native and Node.js.
-    <br />
-    <a href="#"><strong>Explore the docs »</strong></a>
-    <br /><br />
+
   </p>
 </div>
 
----
 
-<!-- TABLE OF CONTENTS -->
-<details>
-  <summary>📑 Table of Contents</summary>
-  <ol>
-    <li><a href="#about-the-project">About The Project</a></li>
-    <li><a href="#product-scope">Product Scope</a></li>
-    <li><a href="#built-with">Built With</a></li>
-  </ol>
-</details>
-
----
 
 ## 📖 About The Project
 
