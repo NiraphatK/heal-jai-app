@@ -39,10 +39,10 @@
 ![MongoDB](https://img.shields.io/badge/MongoDB-%234ea94b.svg?style=for-the-badge&logo=mongodb&logoColor=white)
 ![NPM](https://img.shields.io/badge/NPM-%23CB3837.svg?style=for-the-badge&logo=npm&logoColor=white)
 
-</div>
+</
 
----
 
 ## 📄 Documentation
-👉 [📘 Full Project Documentation](https://github.com/NiraphatK/heal-jai-app/blob/main/Document/Software%20Development%20Project%20Report.pdf)  
 
+> 📘 **[Software Development Project Report](https://github.com/NiraphatK/heal-jai-app/blob/main/Document/Software%20Development%20Project%20Report.pdf)**  
+> รายงานโครงการพัฒนาโปรแกรมฉบับเต็ม
