@@ -43,4 +43,3 @@
 ## 📄 Documentation
 
 > 📘 **[Software Development Project Report](https://github.com/NiraphatK/heal-jai-app/blob/main/Document/Software%20Development%20Project%20Report.pdf)**  
-> รายงานโครงการพัฒนาโปรแกรมฉบับเต็ม
